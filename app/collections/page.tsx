@@ -19,7 +19,7 @@ export default function Collections() {
     </section>
     <section className="catalogue section-pad">
       {categories.map((category, index) => <section className="catalogue-row" id={category.slug} key={category.slug}>
-        <div className="catalogue-image"><Image src={withBasePath(category.image)} alt={category.name} fill sizes="(max-width: 700px) 100vw, 50vw"/></div>
+        <Link href={`/collections/${category.slug}`} className="catalogue-image" aria-label={`Explore ${category.name}`}><Image src={withBasePath(category.image)} alt={category.name} fill sizes="(max-width: 700px) 100vw, 50vw"/></Link>
         <div className="catalogue-copy">
           <span className="eyebrow">COLLECTION 0{index + 1}</span>
           <h2>{category.name}</h2>
