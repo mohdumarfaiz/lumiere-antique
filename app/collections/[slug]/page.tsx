@@ -5,12 +5,15 @@ import { ArrowLeft, ArrowUpRight } from 'lucide-react';
 import { notFound } from 'next/navigation';
 import { categories, products } from '@/lib/products';
 import CollectionShowcase from '@/components/CollectionShowcase';
+import { withBasePath } from '@/lib/site-path';
 
 type PageProps = { params: Promise<{ slug: string }> };
 
 export function generateStaticParams() {
   return categories.map((category) => ({ slug: category.slug }));
 }
+
+export const dynamicParams = false;
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
@@ -29,7 +32,7 @@ export default async function CollectionDetail({ params }: PageProps) {
 
   return <>
     <section className="collection-detail-hero">
-      <Image src={category.image} alt="" fill priority sizes="100vw" className="collection-detail-image" />
+      <Image src={withBasePath(category.image)} alt="" fill priority sizes="100vw" className="collection-detail-image" />
       <div className="collection-detail-shade" />
       <div className="collection-detail-content">
         <Link href="/collections" className="collection-detail-back"><ArrowLeft size={14}/> All collections</Link>

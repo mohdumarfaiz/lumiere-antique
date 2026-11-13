@@ -6,6 +6,7 @@ import { useRef, useState } from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import { motion, useMotionValueEvent, useScroll } from 'framer-motion';
 import { categories } from '@/lib/products';
+import { withBasePath } from '@/lib/site-path';
 
 export default function CollectionExperience() {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -62,7 +63,7 @@ function CollectionSlide({ category, index, active, currentIndex }: { category: 
           <Link href={`/collections/${category.slug}`} className="collection-slide-cta">EXPLORE {category.name.toUpperCase()} <ArrowUpRight size={16} /></Link>
         </div>
         <Link href={`/collections/${category.slug}`} className={`collection-slide-image${category.slug === 'lighting' ? ' collection-slide-image-lighting' : ''}${category.slug === 'home-decor' ? ' collection-slide-image-home-decor' : ''}`} aria-label={`Explore ${category.name}`}>
-          <Image src={category.image} alt={category.name} fill sizes="(max-width: 700px) 80vw, 50vw" priority={index === 0} />
+          <Image src={withBasePath(category.image)} alt={category.name} fill sizes="(max-width: 700px) 80vw, 50vw" priority={index === 0} />
         </Link>
       </div>
     </motion.article>

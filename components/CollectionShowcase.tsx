@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowLeft, ArrowRight, ArrowUpRight, Play } from 'lucide-react';
 import type { Product } from '@/lib/products';
+import { withBasePath } from '@/lib/site-path';
 
 type Props = { items: Product[]; collectionName: string };
 
@@ -34,8 +35,8 @@ export default function CollectionShowcase({ items, collectionName }: Props) {
         return <button type="button" role="tab" aria-selected={isActive} aria-label={`View ${item.name}`} className={`reel-alcove${isActive ? ' is-active' : ''}`} key={item.slug} onClick={() => select(index)}>
           <span className="reel-alcove-light" />
           <span className="reel-alcove-media">
-            {isActive && item.videoUrl ? <video key={`${item.slug}-${item.videoUrl}`} ref={activeVideo} src={item.videoUrl} poster={item.image} autoPlay muted loop playsInline preload="metadata" aria-label={`${item.name} cinematic preview`} />
-              : <Image src={item.image} alt={item.name} fill sizes="(max-width: 700px) 78vw, 25vw" priority={index === 0} style={{ objectPosition: item.imagePosition ?? 'center' }} />}
+            {isActive && item.videoUrl ? <video key={`${item.slug}-${item.videoUrl}`} ref={activeVideo} src={withBasePath(item.videoUrl)} poster={withBasePath(item.image)} autoPlay muted loop playsInline preload="metadata" aria-label={`${item.name} cinematic preview`} />
+              : <Image src={withBasePath(item.image)} alt={item.name} fill sizes="(max-width: 700px) 78vw, 25vw" priority={index === 0} style={{ objectPosition: item.imagePosition ?? 'center' }} />}
           </span>
           <span className="reel-alcove-shade" />
           <span className="reel-alcove-index">{String(index + 1).padStart(2, '0')}</span>

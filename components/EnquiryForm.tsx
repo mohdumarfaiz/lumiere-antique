@@ -1,5 +1,58 @@
 'use client';
+
 import { useState } from 'react';
 import { ArrowUpRight, CheckCircle2 } from 'lucide-react';
-export default function EnquiryForm({productName}:{productName?:string}){const [status,setStatus]=useState<'idle'|'sending'|'success'|'error'>('idle');const [message,setMessage]=useState('');async function submit(e:React.FormEvent<HTMLFormElement>){e.preventDefault();setStatus('sending');const form=e.currentTarget;const data=Object.fromEntries(new FormData(form).entries());try{const r=await fetch('/api/enquiry',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...data,product:productName||data.product})});const j=await r.json();if(!r.ok)throw new Error(j.error||'Unable to send enquiry');setStatus('success');form.reset();}catch(err){setMessage(err instanceof Error?err.message:'Something went wrong. Please try again.');setStatus('error');}}
-return <form className="enquiry-form" onSubmit={submit}><input type="hidden" name="product" value={productName||''}/><div className="form-grid"><label>Full name<input name="name" placeholder="Your name" required/></label><label>Business email<input name="email" type="email" placeholder="name@company.com" required/></label><label>Company name<input name="company" placeholder="Your organisation"/></label><label>Business type<select name="businessType" defaultValue=""><option value="" disabled>Select business type</option><option>Wholesaler / Distributor</option><option>Retailer / Boutique</option><option>Interior Designer / Architect</option><option>Hotel / Hospitality</option><option>Collector</option><option>Other</option></select></label><label>Country<input name="country" placeholder="Your country"/></label><label>Product interest<select name="interest" defaultValue={productName?'Specific product':''}><option value="" disabled>Select a category</option><option>Decorative Objects</option><option>Home Décor</option><option>Lighting</option><option>Brass & Metal Artefacts</option><option>Specific product</option><option>Custom / Bespoke</option></select></label><label className="full-field">Tell us about your requirements<textarea name="requirements" rows={5} placeholder="Share your project, product interests, quantities or custom requirements..." required/></label></div><button className="button button-dark" type="submit" disabled={status==='sending'}>{status==='sending'?'Sending…':'Send enquiry'} <ArrowUpRight size={16}/></button>{status==='success'&&<p className="form-success"><CheckCircle2 size={17}/> Thank you. Your enquiry has been received.</p>}{status==='error'&&<p className="form-error">{message}</p>}<p className="form-privacy">Your details will only be used to respond to this enquiry.</p></form>}
+
+type FormStatus = 'idle' | 'sending' | 'success' | 'error';
+
+export default function EnquiryForm({ productName }: { productName?: string }) {
+  const [status, setStatus] = useState<FormStatus>('idle');
+  const [message, setMessage] = useState('');
+
+  async function submit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const endpoint = process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT;
+    if (!endpoint) {
+      setStatus('error');
+      setMessage('The enquiry form is not connected yet. Please try again later.');
+      return;
+    }
+
+    setStatus('sending');
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    if (productName) formData.set('product', productName);
+
+    try {
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: { Accept: 'application/json' },
+        body: formData,
+      });
+      if (!response.ok) throw new Error('We could not send your enquiry just now. Please try again later.');
+      setStatus('success');
+      setMessage('');
+      form.reset();
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : 'Something went wrong. Please try again.');
+      setStatus('error');
+    }
+  }
+
+  return <form className="enquiry-form" onSubmit={submit}>
+    <input type="hidden" name="product" value={productName ?? ''}/>
+    <div className="form-grid">
+      <label>Full name<input name="name" placeholder="Your name" required/></label>
+      <label>Business email<input name="email" type="email" placeholder="name@company.com" required/></label>
+      <label>Company name<input name="company" placeholder="Your organisation"/></label>
+      <label>Business type<select name="businessType" defaultValue=""><option value="" disabled>Select business type</option><option>Wholesaler / Distributor</option><option>Retailer / Boutique</option><option>Interior Designer / Architect</option><option>Hotel / Hospitality</option><option>Collector</option><option>Other</option></select></label>
+      <label>Country<input name="country" placeholder="Your country"/></label>
+      <label>Product interest<select name="interest" defaultValue={productName ? 'Specific product' : ''}><option value="" disabled>Select a category</option><option>Decorative Objects</option><option>Home Décor</option><option>Lighting</option><option>Brass & Metal Artefacts</option><option>Specific product</option><option>Custom / Bespoke</option></select></label>
+      <label className="full-field">Tell us about your requirements<textarea name="requirements" rows={5} placeholder="Share your project, product interests, quantities or custom requirements..." required/></label>
+    </div>
+    <button className="button button-dark" type="submit" disabled={status === 'sending'}>{status === 'sending' ? 'Sending…' : 'Send enquiry'} <ArrowUpRight size={16}/></button>
+    {status === 'success' && <p className="form-success"><CheckCircle2 size={17}/> Thank you. Your enquiry has been received.</p>}
+    {status === 'error' && <p className="form-error" role="alert">{message}</p>}
+    <p className="form-privacy">Your details will only be used to respond to this enquiry.</p>
+  </form>;
+}

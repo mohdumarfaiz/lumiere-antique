@@ -4,12 +4,15 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowLeft, ArrowUpRight } from 'lucide-react';
 import { categories, products } from '@/lib/products';
+import { withBasePath } from '@/lib/site-path';
 
 type PageProps = { params: Promise<{ slug: string }> };
 
 export function generateStaticParams() {
   return products.map((product) => ({ slug: product.slug }));
 }
+
+export const dynamicParams = false;
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
@@ -26,7 +29,7 @@ export default async function ProductPage({ params }: PageProps) {
   return <section className="product-detail section-pad">
     <Link href={category ? `/collections/${category.slug}` : '/collections'} className="back-link"><ArrowLeft size={15}/> Back to {category?.name ?? 'collections'}</Link>
     <div className="product-layout">
-      <div className="product-photo"><Image src={product.image} alt={product.name} fill sizes="(max-width: 800px) 100vw, 55vw" style={{ objectPosition: product.imagePosition ?? 'center' }}/></div>
+      <div className="product-photo"><Image src={withBasePath(product.image)} alt={product.name} fill sizes="(max-width: 800px) 100vw, 55vw" style={{ objectPosition: product.imagePosition ?? 'center' }}/></div>
       <div className="product-info">
         <span className="eyebrow">{product.category}</span>
         <h1>{product.name}</h1>
