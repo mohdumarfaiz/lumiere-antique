@@ -26,7 +26,7 @@ export default function CollectionExperience() {
 
   return (
     <section className="collections-section collection-experience" aria-label="Explore our collections">
-      <div ref={trackRef} className="collection-scroll-track" style={{ height: `${categories.length * 100}svh` }}>
+      <div ref={trackRef} className="collection-scroll-track" style={{ height: `${categories.length * 65}svh` }}>
         <div className="collection-stage">
           <div className="collection-stage-main">
             <div className="collection-card-stack">
