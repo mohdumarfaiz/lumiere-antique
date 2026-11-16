@@ -62,7 +62,7 @@ function CollectionSlide({ category, index, active, currentIndex }: { category: 
           <p>{category.description}</p>
           <Link href={`/collections/${category.slug}`} className="collection-slide-cta">EXPLORE {category.name.toUpperCase()} <ArrowUpRight size={16} /></Link>
         </div>
-        <Link href={`/collections/${category.slug}`} className={`collection-slide-image${category.slug === 'lighting' ? ' collection-slide-image-lighting' : ''}${category.slug === 'home-decor' ? ' collection-slide-image-home-decor' : ''}`} aria-label={`Explore ${category.name}`}>
+        <Link href={`/collections/${category.slug}`} className={`collection-slide-image${category.slug === 'lighting' ? ' collection-slide-image-lighting' : ''}${category.slug === 'home-decor' ? ' collection-slide-image-home-decor' : ''}${category.slug === 'brass-metal-artefacts' ? ' collection-slide-image-brass-metal' : ''}`} aria-label={`Explore ${category.name}`}>
           <Image src={withBasePath(category.image)} alt={category.name} fill sizes="(max-width: 700px) 80vw, 50vw" priority={index === 0} />
         </Link>
       </div>
