@@ -3,7 +3,7 @@ export const categories = [
   { name: 'Decorative Objects', slug: 'decorative-objects', description: 'Sculptural accents and considered details for collected interiors.', image: '/images/decorative-objects-collection.png' },
   { name: 'Home Décor', slug: 'home-decor', description: 'Finishing touches that bring warmth and individuality to a space.', image: '/images/home-decor-collection.png' },
   { name: 'Lighting', slug: 'lighting', description: 'Atmospheric forms designed to make a lasting impression.', image: '/images/lighting-collection-refined.png' },
-  { name: 'Brass & Metal Artefacts', slug: 'brass-metal-artefacts', description: 'Material-led pieces with expressive finishes and enduring appeal.', image: 'https://images.unsplash.com/photo-1603006905003-be475563bc59?auto=format&fit=crop&w=1200&q=85' },
+  { name: 'Brass & Metal Artefacts', slug: 'brass-metal-artefacts', description: 'Material-led pieces with expressive finishes and enduring appeal.', image: '/images/brass-metal-collection.png' },
 ];
 // Sample catalogue entries used to preview the interactive collection galleries.
 export const products: Product[] = [
